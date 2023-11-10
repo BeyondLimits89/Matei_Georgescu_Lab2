@@ -9,8 +9,6 @@ namespace Matei_Georgescu_Lab2.Models
         public int ID { get; set; }
         
         public int? AuthorID { get; set; }
-        public string AuthorFirstName { get; set; }
-        public string AuthorLastName { get; set; }
 
         public Author? Author { get; set; }
 
