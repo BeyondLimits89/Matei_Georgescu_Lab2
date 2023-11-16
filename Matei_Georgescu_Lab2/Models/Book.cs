@@ -26,5 +26,8 @@ namespace Matei_Georgescu_Lab2.Models
 
         [Display(Name = "Publisher Name")]
         public Publisher? Publisher { get; set; }
+
+        [Display(Name = "Book Category")]
+        public ICollection<BookCategory>? BookCategories { get; set; }
     }
 }
