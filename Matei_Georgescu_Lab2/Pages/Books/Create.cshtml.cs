@@ -1,10 +1,12 @@
 ﻿using Matei_Georgescu_Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Matei_Georgescu_Lab2.Pages.Books
 {
-	public class CreateModel : BookCategoriesPageModel
+    [Authorize(Roles = "Admin")]
+    public class CreateModel : BookCategoriesPageModel
     {
         private readonly Matei_Georgescu_Lab2.Data.Matei_Georgescu_Lab2Context _context;
 

@@ -5,7 +5,13 @@ using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Books");
+    options.Conventions.AllowAnonymousToPage("/Books/Index");
+    options.Conventions.AllowAnonymousToPage("/Books/Details");
+    options.Conventions.AuthorizeFolder("/Members", "AdminPolicy");
+});
 
 // Register the DbContext for your application data
 builder.Services.AddDbContext<Matei_Georgescu_Lab2Context>(options =>
@@ -13,7 +19,13 @@ builder.Services.AddDbContext<Matei_Georgescu_Lab2Context>(options =>
 
 // Register the Identity services
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<Matei_Georgescu_Lab2Context>(); // Use Matei_Georgescu_Lab2Context for identity store
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<Matei_Georgescu_Lab2Context>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+});
 
 var app = builder.Build();
 
