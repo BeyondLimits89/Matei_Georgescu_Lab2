@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Matei_Georgescu_Lab2.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Matei_Georgescu_Lab2.Data
 {
