@@ -20,13 +20,21 @@ namespace Matei_Georgescu_Lab2.Pages.Categories
         }
 
         public IList<Category> Category { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        public IList<Book> Books { get;set; }
+        public int SelectedCategoryId { get; set; }
+        public async Task OnGetAsync(int cateogryID)
         {
             if (_context.Category != null)
             {
                 Category = await _context.Category.ToListAsync();
             }
+
+            SelectedCategoryId = cateogryID;
+            Books = await _context.Book
+                                   .Include(b => b.Author)
+                                   .Include(b => b.Publisher)
+                                   .Where(b => b.BookCategories.Any(bc => bc.CategoryID == cateogryID))
+                                   .ToListAsync();
         }
     }
 }

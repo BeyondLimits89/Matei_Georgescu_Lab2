@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model Matei_Georgescu_Lab2.Pages.Categories.IndexModel
 
 @{
@@ -20,12 +20,14 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Category) {
+@foreach (var item in Model.Category) 
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryName)
             </td>
             <td>
+                <a asp-page="./Index" asp-route-id="@item.ID">Select</a> |
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
@@ -34,3 +36,27 @@
 }
     </tbody>
 </table>
+
+@if (Model.Books != null && Model.Books.Any())
+{
+    <h2>Books in Selected Category</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publisher</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var book in Model.Books)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author.FullName</td>
+                <td>@book.Publisher.PublisherName</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
