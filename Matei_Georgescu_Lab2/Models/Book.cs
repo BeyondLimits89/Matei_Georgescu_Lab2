@@ -7,27 +7,18 @@ namespace Matei_Georgescu_Lab2.Models
     public class Book
     {
         public int ID { get; set; }
-        
-        public int? AuthorID { get; set; }
-
-        public Author? Author { get; set; }
-
         [Display(Name = "Book Title")]
-		public string Title { get; set; }
-
-		[Column(TypeName = "decimal(6, 2)")]
-		public decimal Price { get; set; }
-
-		[DataType(DataType.Date)]
-        [Display(Name = "Publishing Date")]
+        public string Title { get; set; }
+        [Column(TypeName = "decimal(6, 2)")]
+        public decimal Price { get; set; }
+        [DataType(DataType.Date)]
         public DateTime PublishingDate { get; set; }
-
+        public int? AuthorID { get; set; }
+        public Author? Author { get; set; }
         public int? PublisherID { get; set; }
-
-        [Display(Name = "Publisher Name")]
         public Publisher? Publisher { get; set; }
-
-        [Display(Name = "Book Category")]
+        public Borrowing? Borrowing { get; set; }
         public ICollection<BookCategory>? BookCategories { get; set; }
+
     }
 }
