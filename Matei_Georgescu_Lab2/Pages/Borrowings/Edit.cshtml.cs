@@ -25,21 +25,35 @@ namespace Matei_Georgescu_Lab2.Pages.Borrowings
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Borrowing == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var borrowing =  await _context.Borrowing.FirstOrDefaultAsync(m => m.ID == id);
-            if (borrowing == null)
+            Borrowing = await _context.Borrowing
+                .Include(b => b.Book).ThenInclude(b => b.Author)
+                .Include(b => b.Member)
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Borrowing == null)
             {
                 return NotFound();
             }
-            Borrowing = borrowing;
-           ViewData["BookID"] = new SelectList(_context.Book, "ID", "ID");
-           ViewData["MemberID"] = new SelectList(_context.Member, "ID", "ID");
+
+            var bookList = _context.Book
+                .Include(b => b.Author)
+                .Select(x => new
+                {
+                    ID = x.ID,
+                    BookFullName = x.Title + " - " + x.Author.LastName + " " + x.Author.FirstName
+                });
+
+            ViewData["BookID"] = new SelectList(bookList, "ID", "BookFullName", Borrowing.BookID);
+            ViewData["MemberID"] = new SelectList(_context.Member, "ID", "FullName", Borrowing.MemberID);
+
             return Page();
         }
+
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.

@@ -118,12 +118,9 @@ namespace Matei_Georgescu_Lab2.Areas.Identity.Pages.Account
             ExternalLogins = (await
             _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             var user = CreateUser();
-            await _userStore.SetUserNameAsync(user, Input.Email,
-            CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, Input.Email,
-            CancellationToken.None);
-            var result = await _userManager.CreateAsync(user,
-            Input.Password);
+            await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+            var result = await _userManager.CreateAsync(user, Input.Password);
             Member.Email = Input.Email;
             _context.Member.Add(Member);
             await _context.SaveChangesAsync();
@@ -131,14 +128,9 @@ namespace Matei_Georgescu_Lab2.Areas.Identity.Pages.Account
             {
                 _logger.LogInformation("User created a new account with password.");
                 var userId = await _userManager.GetUserIdAsync(user);
-                var code = await
-                _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code =
-                WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page("/Account/ConfirmEmail", pageHandler: null, values: new
                 {
                     area = "Identity",
                     userId = userId,
@@ -147,8 +139,12 @@ namespace Matei_Georgescu_Lab2.Areas.Identity.Pages.Account
                 },
                 protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", $"Please confirm your account by <ahref = '{HtmlEncoder.Default.Encode(callbackUrl)}' > clicking here </ a >.");
-            if
-            (_userManager.Options.SignIn.RequireConfirmedAccount)
+
+                Member.Email = Input.Email;
+                _context.Member.Add(Member);
+                await _context.SaveChangesAsync();
+
+                if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {
                     return RedirectToPage("RegisterConfirmation", new
                     {
