@@ -92,13 +92,6 @@ namespace Matei_Georgescu_Lab2.Pages.Books
 
             UpdateBookCategories(_context, selectedCategories, bookToUpdate);
             PopulateAssignedCategoryData(_context, bookToUpdate);
-            return Page();   
-
-           /* if (bookToUpdate == null)
-            {
-                return NotFound();
-            }
-            _context.Attach(Book).State = EntityState.Modified;*/
 
             try
             {
@@ -117,6 +110,16 @@ namespace Matei_Georgescu_Lab2.Pages.Books
             }
 
             return RedirectToPage("./Index");
+
+            return Page();   
+
+           /* if (bookToUpdate == null)
+            {
+                return NotFound();
+            }
+            _context.Attach(Book).State = EntityState.Modified;*/
+
+           
         }
 
         private bool BookExists(int id)
